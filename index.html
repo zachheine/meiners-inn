@@ -223,34 +223,14 @@
 </main>
 
 <script>
-/* =====================================================================
-   ACCESS LIST — edit these addresses.
-   This is SOFT gating: it runs in the browser and is visible in source.
-   For real protection, gate server-side (see notes the model was shared with).
-   ===================================================================== */
-var ALLOWED_EMAILS = [
-  "you@example.com",
-  "partner@example.com"
-].map(function(s){ return s.trim().toLowerCase(); });
-
-/* Optionally allow a whole domain (e.g. everyone @yourfirm.com).
-   Leave empty [] to disable. */
-var ALLOWED_DOMAINS = [
-  // "yourfirm.com"
-].map(function(s){ return s.trim().toLowerCase(); });
-
-var STORAGE_KEY = "hotel_model_access";
-
 /* ---------- Gate logic ---------- */
-function isAllowed(email){
-  email = (email||"").trim().toLowerCase();
-  if (ALLOWED_EMAILS.indexOf(email) !== -1) return true;
-  var at = email.lastIndexOf("@");
-  if (at > -1){
-    var domain = email.slice(at+1);
-    if (ALLOWED_DOMAINS.indexOf(domain) !== -1) return true;
-  }
-  return false;
+var COOKIE_NAME = "mi_auth";
+
+function hasCookie(){
+  return document.cookie.split(";").some(function(c){ return c.trim().startsWith(COOKIE_NAME + "="); });
+}
+function clearCookie(){
+  document.cookie = COOKIE_NAME + "=; Path=/; Max-Age=0; Secure; SameSite=Lax";
 }
 function validFormat(email){
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test((email||"").trim());
@@ -261,27 +241,41 @@ function showApp(){
   render();
 }
 function tryEnter(){
-  var email = document.getElementById("email").value;
+  var email = (document.getElementById("email").value || "").trim().toLowerCase();
   var err = document.getElementById("gate-err");
+  var btn = document.getElementById("enter");
   if (!validFormat(email)){ err.textContent = "Enter a valid email address."; return; }
-  if (!isAllowed(email)){ err.textContent = "That email isn't on the access list. Check the address or contact the owner."; return; }
   err.textContent = "";
-  try { localStorage.setItem(STORAGE_KEY, email.trim().toLowerCase()); } catch(e){}
-  showApp();
+  btn.disabled = true;
+  btn.textContent = "Checking…";
+  fetch("/api/check-email", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ email: email })
+  }).then(function(res){
+    if (res.ok){ showApp(); return; }
+    if (res.status === 403){
+      err.textContent = "That email isn't on the access list. Check the address or contact the owner.";
+    } else {
+      err.textContent = "Something went wrong. Try again in a moment.";
+    }
+  }).catch(function(){
+    err.textContent = "Network error. Try again in a moment.";
+  }).finally(function(){
+    btn.disabled = false;
+    btn.textContent = "View the model";
+  });
 }
 document.getElementById("enter").addEventListener("click", tryEnter);
 document.getElementById("email").addEventListener("keydown", function(e){ if (e.key === "Enter") tryEnter(); });
 document.getElementById("signout").addEventListener("click", function(){
-  try { localStorage.removeItem(STORAGE_KEY); } catch(e){}
+  clearCookie();
   location.reload();
 });
 
-/* Remember a previously-approved visitor */
+/* Skip gate if already authenticated */
 (function(){
-  try {
-    var saved = localStorage.getItem(STORAGE_KEY);
-    if (saved && isAllowed(saved)) { showApp(); return; }
-  } catch(e){}
+  if (hasCookie()){ showApp(); return; }
   document.getElementById("email").focus();
 })();
 
