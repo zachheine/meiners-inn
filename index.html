@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Boutique Hotel — Long-Term Hold Model</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#1b1f1b;
+    --paper:#f5f4ee;
+    --surface:#ffffff;
+    --sage:#566b4d;
+    --sage-deep:#374231;
+    --muted:#71756c;
+    --line:rgba(27,31,27,0.12);
+    --line-strong:rgba(27,31,27,0.22);
+    --danger:#a23a2e;
+    --font-ui:'Space Grotesk',-apple-system,system-ui,sans-serif;
+    --font-mono:'Space Mono',ui-monospace,monospace;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    font-family:var(--font-ui);
+    background:var(--paper);
+    color:var(--ink);
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:880px;margin:0 auto;padding:32px 24px 80px;}
+  .eyebrow{
+    font-size:12px;letter-spacing:0.18em;text-transform:uppercase;
+    color:var(--sage);font-weight:500;margin:0 0 10px;
+  }
+  h1{font-size:30px;font-weight:700;letter-spacing:-0.01em;margin:0 0 8px;line-height:1.15;}
+  .sub{color:var(--muted);font-size:15px;margin:0;max-width:54ch;}
+  a{color:var(--sage-deep);}
+
+  /* ---------- Gate ---------- */
+  #gate{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px;}
+  .gate-card{
+    width:100%;max-width:420px;background:var(--surface);
+    border:1px solid var(--line);border-radius:14px;padding:36px 32px;
+  }
+  .gate-card h1{font-size:24px;margin-bottom:6px;}
+  .field{margin-top:22px;}
+  label{display:block;font-size:13px;font-weight:500;margin-bottom:7px;}
+  input[type=email]{
+    width:100%;height:46px;padding:0 14px;font-family:var(--font-ui);font-size:15px;
+    border:1px solid var(--line-strong);border-radius:9px;background:var(--paper);color:var(--ink);
+  }
+  input[type=email]:focus{outline:none;border-color:var(--sage);box-shadow:0 0 0 3px rgba(86,107,77,0.18);}
+  .btn{
+    margin-top:16px;width:100%;height:46px;border:none;border-radius:9px;
+    background:var(--ink);color:var(--paper);font-family:var(--font-ui);font-size:15px;font-weight:500;
+    cursor:pointer;transition:transform .08s ease,background .15s ease;
+  }
+  .btn:hover{background:var(--sage-deep);}
+  .btn:active{transform:scale(0.99);}
+  .gate-err{color:var(--danger);font-size:13px;margin:12px 0 0;min-height:18px;}
+  .gate-note{color:var(--muted);font-size:12px;margin-top:20px;line-height:1.5;}
+
+  /* ---------- App ---------- */
+  #app{display:none;}
+  .topbar{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;margin-bottom:28px;}
+  .signout{
+    background:none;border:1px solid var(--line-strong);border-radius:8px;
+    padding:7px 13px;font-family:var(--font-ui);font-size:13px;color:var(--muted);
+    cursor:pointer;white-space:nowrap;
+  }
+  .signout:hover{border-color:var(--sage);color:var(--sage-deep);}
+
+  .controls{
+    display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+    gap:18px 28px;margin-bottom:28px;
+  }
+  .ctrl-head{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:6px;}
+  .ctrl-label{font-size:13px;color:var(--muted);}
+  .ctrl-val{font-family:var(--font-mono);font-size:14px;font-weight:700;color:var(--ink);}
+  input[type=range]{
+    -webkit-appearance:none;appearance:none;width:100%;height:4px;border-radius:2px;
+    background:var(--line-strong);outline:none;
+  }
+  input[type=range]::-webkit-slider-thumb{
+    -webkit-appearance:none;appearance:none;width:18px;height:18px;border-radius:50%;
+    background:var(--sage);cursor:pointer;border:2px solid var(--surface);box-shadow:0 0 0 1px var(--line-strong);
+  }
+  input[type=range]::-moz-range-thumb{
+    width:18px;height:18px;border-radius:50%;background:var(--sage);cursor:pointer;border:2px solid var(--surface);
+  }
+
+  .metrics{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:14px;margin-bottom:14px;}
+  .metric{background:var(--surface);border:1px solid var(--line);border-radius:11px;padding:16px 18px;}
+  .metric .k{font-size:12px;color:var(--muted);letter-spacing:0.02em;}
+  .metric .v{font-family:var(--font-mono);font-size:26px;font-weight:700;margin-top:4px;letter-spacing:-0.02em;}
+  .metric.hero .v{color:var(--sage-deep);}
+
+  .warn{color:var(--danger);font-size:13px;margin:6px 0 0;min-height:18px;}
+
+  .table-wrap{margin-top:22px;overflow-x:auto;border:1px solid var(--line);border-radius:11px;background:var(--surface);}
+  table{width:100%;border-collapse:collapse;font-size:13px;}
+  thead th{
+    text-align:right;font-weight:500;color:var(--muted);font-size:12px;letter-spacing:0.03em;
+    padding:12px 14px;border-bottom:1px solid var(--line);
+  }
+  thead th:first-child{text-align:left;}
+  tbody td{text-align:right;padding:10px 14px;font-family:var(--font-mono);border-bottom:1px solid var(--line);}
+  tbody td:first-child{text-align:left;font-family:var(--font-ui);}
+  tbody tr:last-child td{border-bottom:none;}
+  tbody tr.exit td{background:rgba(86,107,77,0.07);font-weight:700;}
+  .neg{color:var(--danger);}
+
+  .footnote{color:var(--muted);font-size:12px;margin-top:24px;line-height:1.6;}
+
+  @media (max-width:560px){
+    h1{font-size:24px;}
+    .wrap{padding:24px 16px 64px;}
+  }
+  @media (prefers-reduced-motion:reduce){
+    *{transition:none !important;}
+  }
+</style>
+</head>
+<body>
+
+<!-- ============ EMAIL GATE ============ -->
+<section id="gate">
+  <div class="gate-card">
+    <p class="eyebrow">Private model</p>
+    <h1>Investor access</h1>
+    <p class="sub">Enter the email this model was shared with to view the long-term hold projections.</p>
+    <div class="field">
+      <label for="email">Email address</label>
+      <input type="email" id="email" autocomplete="email" placeholder="you@example.com" />
+    </div>
+    <button class="btn" id="enter">View the model</button>
+    <p class="gate-err" id="gate-err"></p>
+    <p class="gate-note">Access is limited to invited addresses. If yours doesn't work, contact the owner to be added.</p>
+  </div>
+</section>
+
+<!-- ============ APP ============ -->
+<main id="app">
+  <div class="wrap">
+    <div class="topbar">
+      <div>
+        <p class="eyebrow">Ojai boutique hotel · long-term hold</p>
+        <h1>10-room inn &amp; event space</h1>
+        <p class="sub">Levered return model. Adjust any assumption to recompute the full hold-period cash flows.</p>
+      </div>
+      <button class="signout" id="signout">Sign out</button>
+    </div>
+
+    <div class="controls" id="controls">
+      <div>
+        <div class="ctrl-head"><span class="ctrl-label">Acquisition price</span><span class="ctrl-val" id="o-acq"></span></div>
+        <input type="range" id="acq" min="2000000" max="5000000" step="50000" value="2900000" />
+      </div>
+      <div>
+        <div class="ctrl-head"><span class="ctrl-label">Improvements / FF&amp;E</span><span class="ctrl-val" id="o-imp"></span></div>
+        <input type="range" id="imp" min="0" max="2500000" step="50000" value="1000000" />
+      </div>
+      <div>
+        <div class="ctrl-head"><span class="ctrl-label">Stabilized NOI (yr 1)</span><span class="ctrl-val" id="o-noi"></span></div>
+        <input type="range" id="noi" min="150000" max="600000" step="10000" value="300000" />
+      </div>
+      <div>
+        <div class="ctrl-head"><span class="ctrl-label">NOI growth / yr</span><span class="ctrl-val" id="o-grow"></span></div>
+        <input type="range" id="grow" min="0" max="6" step="0.25" value="3" />
+      </div>
+      <div>
+        <div class="ctrl-head"><span class="ctrl-label">Loan-to-cost</span><span class="ctrl-val" id="o-ltc"></span></div>
+        <input type="range" id="ltc" min="0" max="85" step="5" value="60" />
+      </div>
+      <div>
+        <div class="ctrl-head"><span class="ctrl-label">Interest rate</span><span class="ctrl-val" id="o-rate"></span></div>
+        <input type="range" id="rate" min="4" max="10" step="0.125" value="7.25" />
+      </div>
+      <div>
+        <div class="ctrl-head"><span class="ctrl-label">Amortization (yrs)</span><span class="ctrl-val" id="o-amort"></span></div>
+        <input type="range" id="amort" min="0" max="30" step="5" value="25" />
+      </div>
+      <div>
+        <div class="ctrl-head"><span class="ctrl-label">Exit cap rate</span><span class="ctrl-val" id="o-cap"></span></div>
+        <input type="range" id="cap" min="5" max="9" step="0.1" value="6.5" />
+      </div>
+      <div>
+        <div class="ctrl-head"><span class="ctrl-label">Hold period (yrs)</span><span class="ctrl-val" id="o-hold"></span></div>
+        <input type="range" id="hold" min="3" max="20" step="1" value="10" />
+      </div>
+      <div>
+        <div class="ctrl-head"><span class="ctrl-label">Selling costs</span><span class="ctrl-val" id="o-sell"></span></div>
+        <input type="range" id="sell" min="0" max="6" step="0.5" value="3" />
+      </div>
+    </div>
+
+    <div class="metrics">
+      <div class="metric hero"><div class="k">Levered IRR</div><div class="v" id="m-irr">—</div></div>
+      <div class="metric"><div class="k">Equity multiple</div><div class="v" id="m-mult">—</div></div>
+      <div class="metric"><div class="k">Yr 1 cash-on-cash</div><div class="v" id="m-coc">—</div></div>
+      <div class="metric"><div class="k">Equity invested</div><div class="v" id="m-eq">—</div></div>
+      <div class="metric"><div class="k">Unlevered yield on cost</div><div class="v" id="m-yoc">—</div></div>
+      <div class="metric"><div class="k">Net sale proceeds</div><div class="v" id="m-exit">—</div></div>
+    </div>
+    <p class="warn" id="warn"></p>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Year</th><th>NOI</th><th>Debt service</th><th>Cash flow</th><th>CoC</th><th>Loan balance</th>
+          </tr>
+        </thead>
+        <tbody id="rows"></tbody>
+      </table>
+    </div>
+
+    <p class="footnote">Deal-framing math, not investment advice or a formal valuation. Exit assumes sale at the chosen cap on forward NOI, net of selling costs and remaining loan balance. Amortization set to 0 = interest-only.</p>
+  </div>
+</main>
+
+<script>
+/* =====================================================================
+   ACCESS LIST — edit these addresses.
+   This is SOFT gating: it runs in the browser and is visible in source.
+   For real protection, gate server-side (see notes the model was shared with).
+   ===================================================================== */
+var ALLOWED_EMAILS = [
+  "you@example.com",
+  "partner@example.com"
+].map(function(s){ return s.trim().toLowerCase(); });
+
+/* Optionally allow a whole domain (e.g. everyone @yourfirm.com).
+   Leave empty [] to disable. */
+var ALLOWED_DOMAINS = [
+  // "yourfirm.com"
+].map(function(s){ return s.trim().toLowerCase(); });
+
+var STORAGE_KEY = "hotel_model_access";
+
+/* ---------- Gate logic ---------- */
+function isAllowed(email){
+  email = (email||"").trim().toLowerCase();
+  if (ALLOWED_EMAILS.indexOf(email) !== -1) return true;
+  var at = email.lastIndexOf("@");
+  if (at > -1){
+    var domain = email.slice(at+1);
+    if (ALLOWED_DOMAINS.indexOf(domain) !== -1) return true;
+  }
+  return false;
+}
+function validFormat(email){
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test((email||"").trim());
+}
+function showApp(){
+  document.getElementById("gate").style.display = "none";
+  document.getElementById("app").style.display = "block";
+  render();
+}
+function tryEnter(){
+  var email = document.getElementById("email").value;
+  var err = document.getElementById("gate-err");
+  if (!validFormat(email)){ err.textContent = "Enter a valid email address."; return; }
+  if (!isAllowed(email)){ err.textContent = "That email isn't on the access list. Check the address or contact the owner."; return; }
+  err.textContent = "";
+  try { localStorage.setItem(STORAGE_KEY, email.trim().toLowerCase()); } catch(e){}
+  showApp();
+}
+document.getElementById("enter").addEventListener("click", tryEnter);
+document.getElementById("email").addEventListener("keydown", function(e){ if (e.key === "Enter") tryEnter(); });
+document.getElementById("signout").addEventListener("click", function(){
+  try { localStorage.removeItem(STORAGE_KEY); } catch(e){}
+  location.reload();
+});
+
+/* Remember a previously-approved visitor */
+(function(){
+  try {
+    var saved = localStorage.getItem(STORAGE_KEY);
+    if (saved && isAllowed(saved)) { showApp(); return; }
+  } catch(e){}
+  document.getElementById("email").focus();
+})();
+
+/* ---------- Model logic ---------- */
+var ids = ["acq","imp","noi","grow","ltc","rate","amort","cap","hold","sell"];
+var el = {};
+ids.forEach(function(id){ el[id] = document.getElementById(id); el[id].addEventListener("input", render); });
+
+function money(n){
+  if (Math.abs(n) >= 1e6) return "$" + (n/1e6).toFixed(2) + "M";
+  return "$" + Math.round(n/1000) + "k";
+}
+function payment(P, rateAnnual, amortYears){
+  if (P <= 0) return 0;
+  if (amortYears === 0) return P * rateAnnual;
+  var r = rateAnnual/12, n = amortYears*12;
+  return P * r * Math.pow(1+r,n) / (Math.pow(1+r,n)-1);
+}
+function balanceAfter(P, rateAnnual, amortYears, monthsPaid){
+  if (P <= 0) return 0;
+  if (amortYears === 0) return P;
+  var r = rateAnnual/12, n = amortYears*12;
+  if (monthsPaid >= n) return 0;
+  var pmt = P * r * Math.pow(1+r,n) / (Math.pow(1+r,n)-1);
+  return P*Math.pow(1+r,monthsPaid) - pmt*((Math.pow(1+r,monthsPaid)-1)/r);
+}
+function irr(flows){
+  function npv(rate){ var s=0; for(var t=0;t<flows.length;t++){ s+=flows[t]/Math.pow(1+rate,t);} return s; }
+  if (npv(0.0001) < 0) return null;
+  var lo=-0.9, hi=1.0;
+  for (var i=0;i<200;i++){
+    var mid=(lo+hi)/2, v=npv(mid);
+    if (Math.abs(v) < 1) return mid;
+    if (v > 0) lo=mid; else hi=mid;
+  }
+  return (lo+hi)/2;
+}
+
+function render(){
+  if (document.getElementById("app").style.display === "none") return;
+
+  var acq=+el.acq.value, imp=+el.imp.value, noi0=+el.noi.value;
+  var grow=+el.grow.value/100, ltc=+el.ltc.value/100, rate=+el.rate.value/100;
+  var amort=+el.amort.value, cap=+el.cap.value/100, hold=+el.hold.value, sell=+el.sell.value/100;
+
+  document.getElementById("o-acq").textContent=money(acq);
+  document.getElementById("o-imp").textContent=money(imp);
+  document.getElementById("o-noi").textContent=money(noi0);
+  document.getElementById("o-grow").textContent=(grow*100).toFixed(2)+"%";
+  document.getElementById("o-ltc").textContent=Math.round(ltc*100)+"%";
+  document.getElementById("o-rate").textContent=(rate*100).toFixed(3).replace(/0+$/,"").replace(/\.$/,"")+"%";
+  document.getElementById("o-amort").textContent = amort===0 ? "IO" : amort;
+  document.getElementById("o-cap").textContent=(cap*100).toFixed(1)+"%";
+  document.getElementById("o-hold").textContent=hold;
+  document.getElementById("o-sell").textContent=(sell*100).toFixed(1)+"%";
+
+  var cost=acq+imp;
+  var loan=cost*ltc;
+  var equity=cost-loan;
+  var ds=payment(loan, rate, amort)*12;
+
+  var flows=[-equity];
+  var rows="", warn="", netExit=0;
+  for (var y=1; y<=hold; y++){
+    var noi=noi0*Math.pow(1+grow, y-1);
+    var cf=noi-ds;
+    var bal=balanceAfter(loan, rate, amort, y*12);
+    var coc=equity>0 ? cf/equity : 0;
+    var total=cf, isExit=(y===hold);
+    if (isExit){
+      var fwdNoi=noi0*Math.pow(1+grow, y);
+      var gross=fwdNoi/cap;
+      netExit=gross*(1-sell)-bal;
+      total=cf+netExit;
+    }
+    flows.push(total);
+    if (cf < 0) warn="Cash flow goes negative — debt service exceeds NOI at this leverage and rate.";
+    rows+='<tr'+(isExit?' class="exit"':'')+'>'+
+      '<td>'+y+(isExit?' · exit':'')+'</td>'+
+      '<td>'+money(noi)+'</td>'+
+      '<td>'+money(ds)+'</td>'+
+      '<td'+(cf<0?' class="neg"':'')+'>'+money(cf)+'</td>'+
+      '<td>'+(coc*100).toFixed(1)+'%</td>'+
+      '<td>'+money(bal)+'</td>'+
+      '</tr>';
+  }
+  document.getElementById("rows").innerHTML=rows;
+
+  var totalReturned=flows.slice(1).reduce(function(a,b){return a+b;},0);
+  var mult=equity>0 ? totalReturned/equity : 0;
+  var r=irr(flows);
+
+  document.getElementById("m-irr").textContent = r===null ? "n/a" : (r*100).toFixed(1)+"%";
+  document.getElementById("m-mult").textContent = equity>0 ? mult.toFixed(2)+"x" : "—";
+  document.getElementById("m-coc").textContent = equity>0 ? ((noi0-ds)/equity*100).toFixed(1)+"%" : "—";
+  document.getElementById("m-eq").textContent = money(equity);
+  document.getElementById("m-yoc").textContent = (noi0/cost*100).toFixed(1)+"%";
+  document.getElementById("m-exit").textContent = money(netExit);
+  document.getElementById("warn").textContent = warn;
+}
+</script>
+</body>
+</html>
