@@ -436,12 +436,6 @@ document.getElementById("signout").addEventListener("click", function(){
   location.reload();
 });
 
-/* Skip gate if already authenticated */
-(function(){
-  if (hasCookie()){ showApp(); return; }
-  document.getElementById("email").focus();
-})();
-
 /* ---------- Tab switching ---------- */
 document.querySelectorAll(".tab-btn").forEach(function(btn){
   btn.addEventListener("click", function(){
@@ -697,6 +691,12 @@ function render(){
   document.getElementById("m-exit").textContent = money(netExit);
   document.getElementById("warn").textContent = warn;
 }
+
+/* Skip gate if already authenticated — runs last so pfEl and el are fully initialized */
+(function(){
+  if (hasCookie()){ showApp(); return; }
+  document.getElementById("email").focus();
+})();
 </script>
 </body>
 </html>
