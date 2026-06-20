@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Boutique Hotel — Long-Term Hold Model</title>
+<title>Meiners Inn — Investment Model</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
@@ -65,7 +65,7 @@
 
   /* ---------- App ---------- */
   #app{display:none;}
-  .topbar{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;margin-bottom:28px;}
+  .topbar{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;margin-bottom:20px;}
   .signout{
     background:none;border:1px solid var(--line-strong);border-radius:8px;
     padding:7px 13px;font-family:var(--font-ui);font-size:13px;color:var(--muted);
@@ -73,9 +73,24 @@
   }
   .signout:hover{border-color:var(--sage);color:var(--sage-deep);}
 
+  /* ---------- Tabs ---------- */
+  .tab-nav{
+    display:flex;gap:0;margin-bottom:28px;
+    border-bottom:1px solid var(--line);
+  }
+  .tab-btn{
+    background:none;border:none;border-bottom:2px solid transparent;
+    padding:10px 18px;margin-bottom:-1px;
+    font-family:var(--font-ui);font-size:14px;font-weight:500;
+    color:var(--muted);cursor:pointer;transition:color .12s ease;
+  }
+  .tab-btn:hover{color:var(--ink);}
+  .tab-btn.active{color:var(--sage-deep);border-bottom-color:var(--sage);}
+
+  /* ---------- Controls (shared) ---------- */
   .controls{
-    display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
-    gap:18px 28px;margin-bottom:28px;
+    display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+    gap:18px 28px;margin-bottom:8px;
   }
   .ctrl-head{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:6px;}
   .ctrl-label{font-size:13px;color:var(--muted);}
@@ -92,6 +107,7 @@
     width:18px;height:18px;border-radius:50%;background:var(--sage);cursor:pointer;border:2px solid var(--surface);
   }
 
+  /* ---------- Metrics (shared) ---------- */
   .metrics{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:14px;margin-bottom:14px;}
   .metric{background:var(--surface);border:1px solid var(--line);border-radius:11px;padding:16px 18px;}
   .metric .k{font-size:12px;color:var(--muted);letter-spacing:0.02em;}
@@ -100,6 +116,7 @@
 
   .warn{color:var(--danger);font-size:13px;margin:6px 0 0;min-height:18px;}
 
+  /* ---------- Tables (shared) ---------- */
   .table-wrap{margin-top:22px;overflow-x:auto;border:1px solid var(--line);border-radius:11px;background:var(--surface);}
   table{width:100%;border-collapse:collapse;font-size:13px;}
   thead th{
@@ -112,8 +129,50 @@
   tbody tr:last-child td{border-bottom:none;}
   tbody tr.exit td{background:rgba(86,107,77,0.07);font-weight:700;}
   .neg{color:var(--danger);}
-
   .footnote{color:var(--muted);font-size:12px;margin-top:24px;line-height:1.6;}
+
+  /* ---------- Pro Forma tab ---------- */
+  .section-head{
+    font-size:11px;letter-spacing:0.12em;text-transform:uppercase;
+    color:var(--muted);font-weight:500;margin:26px 0 14px;
+    padding-bottom:6px;border-bottom:1px solid var(--line);
+  }
+  .section-head:first-child{margin-top:0;}
+  .toggle-row{
+    display:flex;align-items:center;gap:8px;font-size:13px;
+    color:var(--muted);cursor:pointer;margin:20px 0 24px;
+    user-select:none;
+  }
+  .toggle-row input[type=checkbox]{
+    accent-color:var(--sage);width:15px;height:15px;cursor:pointer;flex-shrink:0;
+  }
+  /* Pro forma P&L table */
+  .pf-table tbody td{font-family:var(--font-mono);}
+  .pf-table tbody td:first-child{font-family:var(--font-ui);color:var(--ink);}
+  .pf-table tbody td.note-col{
+    font-family:var(--font-ui);font-size:11px;color:var(--muted);text-align:left;
+    padding-left:0;
+  }
+  .pf-table tr.cat-header td{
+    background:rgba(27,31,27,0.03);color:var(--muted);font-family:var(--font-ui);
+    font-size:11px;letter-spacing:0.08em;text-transform:uppercase;font-weight:500;
+    padding:8px 14px 5px;border-bottom:none;
+  }
+  .pf-table tr.cat-header td:first-child{text-align:left;}
+  .pf-table tr.subtotal td{
+    border-top:1px solid var(--line-strong);font-weight:700;
+    background:rgba(27,31,27,0.02);
+  }
+  .pf-table tr.subtotal td:first-child{font-family:var(--font-ui);}
+  .pf-table tr.noi-row td{
+    border-top:2px solid var(--sage);font-weight:700;
+    color:var(--sage-deep);background:rgba(86,107,77,0.06);
+  }
+  .pf-table tr.noi-row td:first-child{font-family:var(--font-ui);}
+  .pf-table tr.reserve-row td{color:var(--muted);}
+  .pf-table tr.reserve-row td:first-child{font-family:var(--font-ui);}
+  .danger-flag{color:var(--danger);}
+  .noi-note{font-size:12px;color:var(--sage);margin-top:8px;}
 
   @media (max-width:560px){
     h1{font-size:24px;}
@@ -148,80 +207,184 @@
     <div class="topbar">
       <div>
         <p class="eyebrow">Ojai boutique hotel · long-term hold</p>
-        <h1>10-room inn &amp; event space</h1>
-        <p class="sub">Levered return model. Adjust any assumption to recompute the full hold-period cash flows.</p>
+        <h1>Meiners Inn &amp; event space</h1>
+        <p class="sub">10-room inn. Adjust assumptions on the Pro Forma tab to build NOI; the Returns tab models the full hold period.</p>
       </div>
       <button class="signout" id="signout">Sign out</button>
     </div>
 
-    <div class="controls" id="controls">
-      <div>
-        <div class="ctrl-head"><span class="ctrl-label">Acquisition price</span><span class="ctrl-val" id="o-acq"></span></div>
-        <input type="range" id="acq" min="2000000" max="5000000" step="50000" value="2900000" />
-      </div>
-      <div>
-        <div class="ctrl-head"><span class="ctrl-label">Improvements / FF&amp;E</span><span class="ctrl-val" id="o-imp"></span></div>
-        <input type="range" id="imp" min="0" max="2500000" step="50000" value="1000000" />
-      </div>
-      <div>
-        <div class="ctrl-head"><span class="ctrl-label">Stabilized NOI (yr 1)</span><span class="ctrl-val" id="o-noi"></span></div>
-        <input type="range" id="noi" min="150000" max="600000" step="10000" value="300000" />
-      </div>
-      <div>
-        <div class="ctrl-head"><span class="ctrl-label">NOI growth / yr</span><span class="ctrl-val" id="o-grow"></span></div>
-        <input type="range" id="grow" min="0" max="6" step="0.25" value="3" />
-      </div>
-      <div>
-        <div class="ctrl-head"><span class="ctrl-label">Loan-to-cost</span><span class="ctrl-val" id="o-ltc"></span></div>
-        <input type="range" id="ltc" min="0" max="85" step="5" value="60" />
-      </div>
-      <div>
-        <div class="ctrl-head"><span class="ctrl-label">Interest rate</span><span class="ctrl-val" id="o-rate"></span></div>
-        <input type="range" id="rate" min="4" max="10" step="0.125" value="7.25" />
-      </div>
-      <div>
-        <div class="ctrl-head"><span class="ctrl-label">Amortization (yrs)</span><span class="ctrl-val" id="o-amort"></span></div>
-        <input type="range" id="amort" min="0" max="30" step="5" value="25" />
-      </div>
-      <div>
-        <div class="ctrl-head"><span class="ctrl-label">Exit cap rate</span><span class="ctrl-val" id="o-cap"></span></div>
-        <input type="range" id="cap" min="5" max="9" step="0.1" value="6.5" />
-      </div>
-      <div>
-        <div class="ctrl-head"><span class="ctrl-label">Hold period (yrs)</span><span class="ctrl-val" id="o-hold"></span></div>
-        <input type="range" id="hold" min="3" max="20" step="1" value="10" />
-      </div>
-      <div>
-        <div class="ctrl-head"><span class="ctrl-label">Selling costs</span><span class="ctrl-val" id="o-sell"></span></div>
-        <input type="range" id="sell" min="0" max="6" step="0.5" value="3" />
-      </div>
+    <!-- Tab nav -->
+    <div class="tab-nav">
+      <button class="tab-btn active" data-tab="proforma">Pro Forma</button>
+      <button class="tab-btn" data-tab="returns">Returns</button>
     </div>
 
-    <div class="metrics">
-      <div class="metric hero"><div class="k">Levered IRR</div><div class="v" id="m-irr">—</div></div>
-      <div class="metric"><div class="k">Equity multiple</div><div class="v" id="m-mult">—</div></div>
-      <div class="metric"><div class="k">Yr 1 cash-on-cash</div><div class="v" id="m-coc">—</div></div>
-      <div class="metric"><div class="k">Equity invested</div><div class="v" id="m-eq">—</div></div>
-      <div class="metric"><div class="k">Unlevered yield on cost</div><div class="v" id="m-yoc">—</div></div>
-      <div class="metric"><div class="k">Net sale proceeds</div><div class="v" id="m-exit">—</div></div>
-    </div>
-    <p class="warn" id="warn"></p>
+    <!-- ======== PRO FORMA TAB ======== -->
+    <div class="tab-panel" id="tab-proforma">
 
-    <div class="table-wrap">
-      <table>
-        <thead>
-          <tr>
-            <th>Year</th><th>NOI</th><th>Debt service</th><th>Cash flow</th><th>CoC</th><th>Loan balance</th>
-          </tr>
-        </thead>
-        <tbody id="rows"></tbody>
-      </table>
+      <p class="section-head">Revenue drivers</p>
+      <div class="controls">
+        <div>
+          <div class="ctrl-head"><span class="ctrl-label">ADR</span><span class="ctrl-val" id="pf-o-adr"></span></div>
+          <input type="range" id="pf-adr" min="150" max="600" step="25" value="350" />
+        </div>
+        <div>
+          <div class="ctrl-head"><span class="ctrl-label">Occupancy</span><span class="ctrl-val" id="pf-o-occ"></span></div>
+          <input type="range" id="pf-occ" min="30" max="85" step="1" value="62" />
+        </div>
+        <div>
+          <div class="ctrl-head"><span class="ctrl-label">Events / year</span><span class="ctrl-val" id="pf-o-events"></span></div>
+          <input type="range" id="pf-events" min="0" max="150" step="5" value="50" />
+        </div>
+        <div>
+          <div class="ctrl-head"><span class="ctrl-label">Net fee / event</span><span class="ctrl-val" id="pf-o-fee"></span></div>
+          <input type="range" id="pf-fee" min="1000" max="15000" step="500" value="6000" />
+        </div>
+      </div>
+
+      <p class="section-head">Cost structure</p>
+      <div class="controls">
+        <div>
+          <div class="ctrl-head"><span class="ctrl-label">Rooms dept cost</span><span class="ctrl-val" id="pf-o-rooms-cost"></span></div>
+          <input type="range" id="pf-rooms-cost" min="15" max="50" step="1" value="30" />
+        </div>
+        <div>
+          <div class="ctrl-head"><span class="ctrl-label">Events dept cost</span><span class="ctrl-val" id="pf-o-events-cost"></span></div>
+          <input type="range" id="pf-events-cost" min="15" max="45" step="1" value="28" />
+        </div>
+        <div>
+          <div class="ctrl-head"><span class="ctrl-label">Admin &amp; general</span><span class="ctrl-val" id="pf-o-ag"></span></div>
+          <input type="range" id="pf-ag" min="5" max="15" step="0.5" value="9" />
+        </div>
+        <div>
+          <div class="ctrl-head"><span class="ctrl-label">Sales &amp; marketing</span><span class="ctrl-val" id="pf-o-sm"></span></div>
+          <input type="range" id="pf-sm" min="3" max="15" step="0.5" value="8" />
+        </div>
+        <div>
+          <div class="ctrl-head"><span class="ctrl-label">Prop ops &amp; maint</span><span class="ctrl-val" id="pf-o-om"></span></div>
+          <input type="range" id="pf-om" min="2" max="12" step="0.5" value="5.5" />
+        </div>
+        <div>
+          <div class="ctrl-head"><span class="ctrl-label">Utilities</span><span class="ctrl-val" id="pf-o-util"></span></div>
+          <input type="range" id="pf-util" min="2" max="10" step="0.5" value="4.5" />
+        </div>
+        <div>
+          <div class="ctrl-head"><span class="ctrl-label">Management fee</span><span class="ctrl-val" id="pf-o-mgmt"></span></div>
+          <input type="range" id="pf-mgmt" min="0" max="8" step="0.5" value="4" />
+        </div>
+        <div>
+          <div class="ctrl-head"><span class="ctrl-label">Insurance / yr <span class="danger-flag">⚠</span></span><span class="ctrl-val" id="pf-o-ins"></span></div>
+          <input type="range" id="pf-ins" min="20000" max="150000" step="5000" value="55000" />
+        </div>
+        <div>
+          <div class="ctrl-head"><span class="ctrl-label">FF&amp;E reserve</span><span class="ctrl-val" id="pf-o-ffe"></span></div>
+          <input type="range" id="pf-ffe" min="1" max="8" step="0.5" value="4" />
+        </div>
+      </div>
+
+      <label class="toggle-row">
+        <input type="checkbox" id="pf-reserve-toggle" />
+        Deduct FF&amp;E reserve above the NOI line (conservative treatment)
+      </label>
+
+      <div class="metrics">
+        <div class="metric"><div class="k">RevPAR</div><div class="v" id="pf-m-revpar">—</div></div>
+        <div class="metric"><div class="k">Total revenue</div><div class="v" id="pf-m-rev">—</div></div>
+        <div class="metric"><div class="k">GOP margin</div><div class="v" id="pf-m-gop">—</div></div>
+        <div class="metric hero"><div class="k">NOI → Returns</div><div class="v" id="pf-m-noi">—</div></div>
+      </div>
+
+      <div class="table-wrap">
+        <table class="pf-table">
+          <thead>
+            <tr><th style="text-align:left">Line item</th><th style="text-align:left;color:var(--muted);font-size:11px;font-weight:400">Note</th><th>Amount</th></tr>
+          </thead>
+          <tbody id="pf-rows"></tbody>
+        </table>
+      </div>
+
+      <p class="footnote">
+        Property tax uses acquisition price &amp; improvements from the Returns tab (Prop 13: 1.1% × basis). Change either slider there and NOI here updates.
+        <br>⚠ Insurance defaulted at $55k — Ojai is a high wildfire zone; hospitality coverage is expensive and hard to place. Verify a real quote before using this in a pitch.
+        <br>Management fee set to 0 for owner-operated; adjust if a third-party manager is assumed.
+        <br>These are modeling estimates, not market comps or a valuation.
+      </p>
     </div>
 
-    <p class="footnote">Deal-framing math, not investment advice or a formal valuation. Exit assumes sale at the chosen cap on forward NOI, net of selling costs and remaining loan balance. Amortization set to 0 = interest-only.</p>
+    <!-- ======== RETURNS TAB ======== -->
+    <div class="tab-panel" id="tab-returns" style="display:none">
+
+      <div class="controls" id="controls">
+        <div>
+          <div class="ctrl-head"><span class="ctrl-label">Acquisition price</span><span class="ctrl-val" id="o-acq"></span></div>
+          <input type="range" id="acq" min="2000000" max="5000000" step="50000" value="2900000" />
+        </div>
+        <div>
+          <div class="ctrl-head"><span class="ctrl-label">Improvements / FF&amp;E</span><span class="ctrl-val" id="o-imp"></span></div>
+          <input type="range" id="imp" min="0" max="2500000" step="50000" value="1000000" />
+        </div>
+        <div>
+          <div class="ctrl-head"><span class="ctrl-label">Stabilized NOI (yr 1)</span><span class="ctrl-val" id="o-noi"></span></div>
+          <input type="range" id="noi" min="150000" max="600000" step="10000" value="300000" />
+        </div>
+        <div>
+          <div class="ctrl-head"><span class="ctrl-label">NOI growth / yr</span><span class="ctrl-val" id="o-grow"></span></div>
+          <input type="range" id="grow" min="0" max="6" step="0.25" value="3" />
+        </div>
+        <div>
+          <div class="ctrl-head"><span class="ctrl-label">Loan-to-cost</span><span class="ctrl-val" id="o-ltc"></span></div>
+          <input type="range" id="ltc" min="0" max="85" step="5" value="60" />
+        </div>
+        <div>
+          <div class="ctrl-head"><span class="ctrl-label">Interest rate</span><span class="ctrl-val" id="o-rate"></span></div>
+          <input type="range" id="rate" min="4" max="10" step="0.125" value="7.25" />
+        </div>
+        <div>
+          <div class="ctrl-head"><span class="ctrl-label">Amortization (yrs)</span><span class="ctrl-val" id="o-amort"></span></div>
+          <input type="range" id="amort" min="0" max="30" step="5" value="25" />
+        </div>
+        <div>
+          <div class="ctrl-head"><span class="ctrl-label">Exit cap rate</span><span class="ctrl-val" id="o-cap"></span></div>
+          <input type="range" id="cap" min="5" max="9" step="0.1" value="6.5" />
+        </div>
+        <div>
+          <div class="ctrl-head"><span class="ctrl-label">Hold period (yrs)</span><span class="ctrl-val" id="o-hold"></span></div>
+          <input type="range" id="hold" min="3" max="20" step="1" value="10" />
+        </div>
+        <div>
+          <div class="ctrl-head"><span class="ctrl-label">Selling costs</span><span class="ctrl-val" id="o-sell"></span></div>
+          <input type="range" id="sell" min="0" max="6" step="0.5" value="3" />
+        </div>
+      </div>
+
+      <div class="metrics">
+        <div class="metric hero"><div class="k">Levered IRR</div><div class="v" id="m-irr">—</div></div>
+        <div class="metric"><div class="k">Equity multiple</div><div class="v" id="m-mult">—</div></div>
+        <div class="metric"><div class="k">Yr 1 cash-on-cash</div><div class="v" id="m-coc">—</div></div>
+        <div class="metric"><div class="k">Equity invested</div><div class="v" id="m-eq">—</div></div>
+        <div class="metric"><div class="k">Unlevered yield on cost</div><div class="v" id="m-yoc">—</div></div>
+        <div class="metric"><div class="k">Net sale proceeds</div><div class="v" id="m-exit">—</div></div>
+      </div>
+      <p class="warn" id="warn"></p>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Year</th><th>NOI</th><th>Debt service</th><th>Cash flow</th><th>CoC</th><th>Loan balance</th>
+            </tr>
+          </thead>
+          <tbody id="rows"></tbody>
+        </table>
+      </div>
+
+      <p class="footnote">NOI on this tab is set from the Pro Forma tab. You can drag it independently to run scenarios. Exit assumes sale at the chosen cap on forward NOI, net of selling costs and remaining loan balance. Amortization 0 = interest-only. Deal-framing math, not investment advice or a formal valuation.</p>
+    </div>
+
   </div>
 </main>
 
+<script src="hotel-proforma.js"></script>
 <script>
 /* ---------- Gate logic ---------- */
 var COOKIE_NAME = "mi_auth";
@@ -238,7 +401,7 @@ function validFormat(email){
 function showApp(){
   document.getElementById("gate").style.display = "none";
   document.getElementById("app").style.display = "block";
-  render();
+  renderProForma();
 }
 function tryEnter(){
   var email = (document.getElementById("email").value || "").trim().toLowerCase();
@@ -279,10 +442,170 @@ document.getElementById("signout").addEventListener("click", function(){
   document.getElementById("email").focus();
 })();
 
-/* ---------- Model logic ---------- */
-var ids = ["acq","imp","noi","grow","ltc","rate","amort","cap","hold","sell"];
+/* ---------- Tab switching ---------- */
+document.querySelectorAll(".tab-btn").forEach(function(btn){
+  btn.addEventListener("click", function(){
+    document.querySelectorAll(".tab-btn").forEach(function(b){ b.classList.remove("active"); });
+    document.querySelectorAll(".tab-panel").forEach(function(p){ p.style.display = "none"; });
+    btn.classList.add("active");
+    document.getElementById("tab-" + btn.dataset.tab).style.display = "";
+  });
+});
+
+/* ---------- Pro Forma ---------- */
+var pfEl = {
+  adr:        document.getElementById("pf-adr"),
+  occ:        document.getElementById("pf-occ"),
+  events:     document.getElementById("pf-events"),
+  fee:        document.getElementById("pf-fee"),
+  roomsCost:  document.getElementById("pf-rooms-cost"),
+  eventsCost: document.getElementById("pf-events-cost"),
+  ag:         document.getElementById("pf-ag"),
+  sm:         document.getElementById("pf-sm"),
+  om:         document.getElementById("pf-om"),
+  util:       document.getElementById("pf-util"),
+  mgmt:       document.getElementById("pf-mgmt"),
+  ins:        document.getElementById("pf-ins"),
+  ffe:        document.getElementById("pf-ffe"),
+  toggle:     document.getElementById("pf-reserve-toggle")
+};
+
+function pfRow(label, note, amount, cls){
+  var neg = amount < 0;
+  var display = HotelProForma.formatMoney(Math.abs(amount));
+  if (neg) display = "(" + display + ")";
+  return '<tr' + (cls ? ' class="' + cls + '"' : '') + '>' +
+    '<td>' + label + '</td>' +
+    '<td class="note-col">' + (note || "") + '</td>' +
+    '<td' + (neg ? ' class="neg"' : '') + '>' + display + '</td>' +
+    '</tr>';
+}
+function pfCat(label){
+  return '<tr class="cat-header"><td colspan="3">' + label + '</td></tr>';
+}
+function pfSubtotal(label, amount, cls){
+  return pfRow(label, "", amount, cls || "subtotal");
+}
+
+function renderProForma(){
+  var includeReserve = pfEl.toggle.checked;
+  var acq = +document.getElementById("acq").value;
+  var imp = +document.getElementById("imp").value;
+
+  var inputs = {
+    adr:                    +pfEl.adr.value,
+    occupancy:              +pfEl.occ.value / 100,
+    eventsPerYear:          +pfEl.events.value,
+    netFeePerEvent:         +pfEl.fee.value,
+    roomsCostPctOfRoomsRev: +pfEl.roomsCost.value / 100,
+    eventsCostPctOfEventRev:+pfEl.eventsCost.value / 100,
+    adminGeneralPct:        +pfEl.ag.value / 100,
+    salesMarketingPct:      +pfEl.sm.value / 100,
+    propertyOpsMaintPct:    +pfEl.om.value / 100,
+    utilitiesPct:           +pfEl.util.value / 100,
+    managementFeePct:       +pfEl.mgmt.value / 100,
+    insuranceAnnual:        +pfEl.ins.value,
+    ffeReservePct:          +pfEl.ffe.value / 100,
+    acquisitionPrice:       acq,
+    improvements:           imp
+  };
+
+  var pf = HotelProForma.computeProForma(inputs, { includeReserveInNOI: includeReserve });
+  var fm = HotelProForma.formatMoney;
+  var fp = HotelProForma.formatPct;
+
+  /* Display slider values */
+  document.getElementById("pf-o-adr").textContent     = "$" + pfEl.adr.value;
+  document.getElementById("pf-o-occ").textContent     = pfEl.occ.value + "%";
+  document.getElementById("pf-o-events").textContent  = pfEl.events.value;
+  document.getElementById("pf-o-fee").textContent     = fm(+pfEl.fee.value);
+  document.getElementById("pf-o-rooms-cost").textContent  = pfEl.roomsCost.value + "%";
+  document.getElementById("pf-o-events-cost").textContent = pfEl.eventsCost.value + "%";
+  document.getElementById("pf-o-ag").textContent      = pfEl.ag.value + "%";
+  document.getElementById("pf-o-sm").textContent      = pfEl.sm.value + "%";
+  document.getElementById("pf-o-om").textContent      = pfEl.om.value + "%";
+  document.getElementById("pf-o-util").textContent    = pfEl.util.value + "%";
+  document.getElementById("pf-o-mgmt").textContent    = pfEl.mgmt.value + "%";
+  document.getElementById("pf-o-ins").textContent     = fm(+pfEl.ins.value);
+  document.getElementById("pf-o-ffe").textContent     = pfEl.ffe.value + "%";
+
+  /* Metrics */
+  document.getElementById("pf-m-revpar").textContent = "$" + Math.round(pf.revenue.revpar);
+  document.getElementById("pf-m-rev").textContent    = fm(pf.revenue.total);
+  document.getElementById("pf-m-gop").textContent    = fp(pf.gopMargin);
+  document.getElementById("pf-m-noi").textContent    = fm(pf.noi);
+
+  /* P&L table */
+  var rows = "";
+  rows += pfCat("Revenue");
+  rows += pfRow("Rooms revenue", fp(pf.revenue.occupancy) + " occ · $" + Math.round(pf.revenue.adr) + " ADR", pf.revenue.rooms);
+  rows += pfRow("Events revenue", pf.revenue.events > 0 ? inputs.eventsPerYear + " events × " + fm(inputs.netFeePerEvent) : "—", pf.revenue.events);
+  rows += pfSubtotal("Total revenue", pf.revenue.total);
+
+  rows += pfCat("Departmental costs");
+  rows += pfRow("Rooms dept", fp(inputs.roomsCostPctOfRoomsRev) + " of rooms rev", -pf.departmental.rooms);
+  rows += pfRow("Events dept", fp(inputs.eventsCostPctOfEventRev) + " of events rev", -pf.departmental.events);
+
+  rows += pfCat("Undistributed");
+  rows += pfRow("Admin &amp; general",     fp(inputs.adminGeneralPct) + " of rev",   -pf.undistributed.adminGeneral);
+  rows += pfRow("Sales &amp; marketing",   fp(inputs.salesMarketingPct) + " of rev", -pf.undistributed.salesMarketing);
+  rows += pfRow("Prop ops &amp; maint",    fp(inputs.propertyOpsMaintPct) + " of rev",-pf.undistributed.propertyOpsMaint);
+  rows += pfRow("Utilities",               fp(inputs.utilitiesPct) + " of rev",      -pf.undistributed.utilities);
+  rows += pfSubtotal("Gross operating profit", pf.grossOperatingProfit);
+
+  rows += pfCat("Below GOP");
+  if (inputs.managementFeePct > 0) {
+    rows += pfRow("Management fee", fp(inputs.managementFeePct) + " of rev", -pf.managementFee);
+  }
+
+  rows += pfCat("Fixed charges");
+  rows += pfRow("Property tax", "1.1% × " + fm(acq + imp) + " basis (Prop 13)", -pf.fixed.propertyTax);
+  rows += pfRow("Insurance", '<span class="danger-flag">⚠ wildfire zone — verify quote</span>', -pf.fixed.insurance);
+  rows += pfSubtotal("NOI before reserve", pf.noiBeforeReserve);
+
+  if (includeReserve) {
+    rows += '<tr class="reserve-row">' +
+      '<td>FF&amp;E reserve</td>' +
+      '<td class="note-col">' + fp(inputs.ffeReservePct) + ' of rev · deducted above NOI line</td>' +
+      '<td class="neg">(' + fm(pf.ffeReserve) + ')</td>' +
+      '</tr>';
+    rows += pfSubtotal("NOI (incl. reserve)", pf.noi, "noi-row");
+  } else {
+    rows += '<tr class="reserve-row">' +
+      '<td>FF&amp;E reserve</td>' +
+      '<td class="note-col">' + fp(inputs.ffeReservePct) + ' of rev · below NOI line (lender convention)</td>' +
+      '<td class="neg">(' + fm(pf.ffeReserve) + ')</td>' +
+      '</tr>';
+    rows += pfSubtotal("NOI", pf.noi, "noi-row");
+  }
+
+  document.getElementById("pf-rows").innerHTML = rows;
+
+  /* Feed NOI to the Returns tab */
+  var noiSlider = document.getElementById("noi");
+  var clampedNoi = Math.max(+noiSlider.min, Math.min(+noiSlider.max, Math.round(pf.noi / 10000) * 10000));
+  noiSlider.value = clampedNoi;
+  render();
+}
+
+/* Wire pro forma sliders */
+Object.keys(pfEl).forEach(function(k){
+  var el = pfEl[k];
+  el.addEventListener(el.type === "checkbox" ? "change" : "input", renderProForma);
+});
+
+/* acq and imp also feed property tax in the pro forma */
+["acq","imp"].forEach(function(id){
+  document.getElementById(id).addEventListener("input", renderProForma);
+});
+
+/* ---------- Returns model ---------- */
+var ids = ["noi","grow","ltc","rate","amort","cap","hold","sell"];
 var el = {};
 ids.forEach(function(id){ el[id] = document.getElementById(id); el[id].addEventListener("input", render); });
+/* acq/imp are wired above to renderProForma which calls render() */
+el.acq = document.getElementById("acq");
+el.imp = document.getElementById("imp");
 
 function money(n){
   if (Math.abs(n) >= 1e6) return "$" + (n/1e6).toFixed(2) + "M";
@@ -315,8 +638,6 @@ function irr(flows){
 }
 
 function render(){
-  if (document.getElementById("app").style.display === "none") return;
-
   var acq=+el.acq.value, imp=+el.imp.value, noi0=+el.noi.value;
   var grow=+el.grow.value/100, ltc=+el.ltc.value/100, rate=+el.rate.value/100;
   var amort=+el.amort.value, cap=+el.cap.value/100, hold=+el.hold.value, sell=+el.sell.value/100;
